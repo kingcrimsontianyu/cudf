@@ -12,6 +12,7 @@ import pickle
 import subprocess
 import tempfile
 import types
+import warnings
 from io import BytesIO, StringIO
 
 import numpy as np
@@ -1632,3 +1633,44 @@ def test_change_index_name(index):
 
         assert s.index.name == name
         assert df.index.name == name
+
+
+@pytest.mark.parametrize(
+    "op",
+    [
+        "sum",
+        "min",
+        "max",
+        "mean",
+        "std",
+        "var",
+        "prod",
+        "median",
+    ],
+)
+def test_no_fallback_on_reduction_ops(monkeypatch, dataframe, op):
+    with warnings.catch_warnings(record=True) as w:
+        warnings.simplefilter("always")
+        with monkeypatch.context() as monkeycontext:
+            monkeycontext.setenv("CUDF_PANDAS_WARN_ON_FALLBACK", "True")
+            getattr(dataframe[1], op)()
+
+            assert not any(
+                issubclass(warning.category, UserWarning)
+                and "Falling back to the slow path." in str(warning.message)
+                for warning in w
+            )
+
+
+def test_fallback_on_series_with_object_type(monkeypatch):
+    with warnings.catch_warnings(record=True) as w:
+        warnings.simplefilter("always")
+        with monkeypatch.context() as monkeycontext:
+            monkeycontext.setenv("CUDF_PANDAS_WARN_ON_FALLBACK", "True")
+            pd.Series([1], dtype="object")
+
+            assert any(
+                issubclass(warning.category, UserWarning)
+                and "Falling back to the slow path." in str(warning.message)
+                for warning in w
+            )

@@ -931,6 +931,11 @@ def _fast_slow_function_call(
                             f"The exception was {e}."
                         )
     except Exception as err:
+        if _env_get_bool("CUDF_PANDAS_WARN_ON_FALLBACK", False):
+            warnings.warn(
+                "Falling back to the slow path. " f"The exception was {err}.",
+                UserWarning,
+            )
         with nvtx.annotate(
             "EXECUTE_SLOW",
             color=_CUDF_PANDAS_NVTX_COLORS["EXECUTE_SLOW"],

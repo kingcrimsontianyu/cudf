@@ -34,6 +34,8 @@ select = [
     "F",
     # pycodestyle Warning
     "W",
+    # isort
+    "I",
     # no-blank-line-before-function
     "D201",
     # one-blank-line-after-class
@@ -96,6 +98,8 @@ ignore = [
     "E203",
     # line-too-long (due to Copyright header)
     "E501",
+    # [*] Import block is un-sorted or un-formatted
+    "I001",
 ]
 fixable = ["ALL"]
 exclude = [

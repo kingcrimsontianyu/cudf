@@ -101,11 +101,13 @@
 
 int main(int argc, char const** argv)
 {
-  auto const args = parse_args(argc, argv);
-
-  // Use a memory pool
-  auto resource = create_memory_resource(args.memory_resource_type);
+  std::string rmm_mode = argv[1];
+  auto resource        = create_memory_resource(rmm_mode);
   rmm::mr::set_current_device_resource(resource.get());
+
+  // Define a map for holding parquet data sources
+  std::unordered_map<std::string, parquet_device_buffer> sources;
+  generate_parquet_data_sources({"lineitem"}, sources);
 
   // Define the column projections and filter predicate for `lineitem` table
   std::vector<std::string> const lineitem_cols = {"l_returnflag",
@@ -126,7 +128,7 @@ int main(int argc, char const** argv)
 
   // Read out the `lineitem` table from parquet file
   auto lineitem =
-    read_parquet(args.dataset_dir + "/lineitem.parquet", lineitem_cols, std::move(lineitem_pred));
+    read_parquet(sources["lineitem"].make_source_info(), lineitem_cols, std::move(lineitem_pred));
 
   // Calculate the discount price and charge columns and append to lineitem table
   auto disc_price =

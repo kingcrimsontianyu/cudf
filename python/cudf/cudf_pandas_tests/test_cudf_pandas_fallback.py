@@ -2,8 +2,6 @@
 # All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-import warnings
-
 import pytest
 
 from cudf.pandas import LOADED
@@ -15,35 +13,9 @@ import pandas as xpd
 
 pd = xpd._fsproxy_slow
 
-
-def no_fallback(fallback=False):
-    def decorator(func):
-        @pytest.mark.usefixtures("recwarn")
-        def wrapper(*args, **kwargs):
-            with pytest.MonkeyPatch().context() as mp:
-                mp.setenv("CUDF_PANDAS_WARN_ON_FALLBACK", "True")
-                with warnings.catch_warnings(record=True) as w:
-                    warnings.simplefilter("always")
-                    result = func(*args, **kwargs)
-                    fallback_warnings = any(
-                        issubclass(warn.category, UserWarning)
-                        and "Falling back to the slow path."
-                        in str(warn.message)
-                        for warn in w
-                    )
-                    if fallback:
-                        assert (
-                            fallback_warnings
-                        ), "Expected fallback, but no fallback occured."
-                    else:
-                        assert (
-                            not fallback_warnings
-                        ), "Expected no fallback, but fallback occured"
-                    return result
-
-        return wrapper
-
-    return decorator
+pytestmark = pytest.mark.filterwarnings(
+    "error::UserWarning:.*Falling back to the slow path.*"
+)
 
 
 @pytest.fixture
@@ -59,7 +31,6 @@ def series(dataframe):
     return (pdf["a"], df["a"])
 
 
-@no_fallback
 @pytest.mark.parametrize(
     "op",
     [
@@ -75,6 +46,28 @@ def series(dataframe):
 )
 def test_no_fallback_in_reduction_ops(series, op):
     s, xs = series
+    res = getattr(xs, op)
+    expect = getattr(s, op)
+    assert res == expect
+
+
+@pytest.mark.xfail(reason="Fallback expected")
+@pytest.mark.parametrize(
+    "op",
+    [
+        "sum",
+        "min",
+        "max",
+        "mean",
+        "std",
+        "var",
+        "prod",
+        "median",
+    ],
+)
+def test_fallback_in_reduction_ops(op):
+    s = pd.Series(range(2), dtype=object)
+    xs = pd.Series(range(2), dtype=object)
     res = getattr(xs, op)
     expect = getattr(s, op)
     assert res == expect

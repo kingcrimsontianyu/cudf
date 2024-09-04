@@ -47,8 +47,8 @@ def series(dataframe):
 )
 def test_no_fallback_in_reduction_ops(series, op):
     s, xs = series
-    res = getattr(xs, op)
-    expect = getattr(s, op)
+    res = getattr(xs, op)()
+    expect = getattr(s, op)()
     tm.assert_almost_equal(res, expect)
 
 
@@ -69,6 +69,6 @@ def test_no_fallback_in_reduction_ops(series, op):
 def test_fallback_in_reduction_ops(op):
     s = pd.Series(range(2), dtype=object)
     xs = pd.Series(range(2), dtype=object)
-    res = getattr(xs, op)
-    expect = getattr(s, op)
+    res = getattr(xs, op)()
+    expect = getattr(s, op)()
     tm.assert_almost_equal(res, expect)

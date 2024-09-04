@@ -49,7 +49,7 @@ def test_no_fallback_in_reduction_ops(series, op):
     s, xs = series
     res = getattr(xs, op)
     expect = getattr(s, op)
-    tm.assert_series_equal(res, expect)
+    tm.assert_almost_equal(res, expect)
 
 
 @pytest.mark.xfail(reason="Fallback expected")
@@ -71,4 +71,4 @@ def test_fallback_in_reduction_ops(op):
     xs = pd.Series(range(2), dtype=object)
     res = getattr(xs, op)
     expect = getattr(s, op)
-    tm.assert_series_equal(res, expect)
+    tm.assert_almost_equal(res, expect)

@@ -11,7 +11,9 @@
   "runArgs": [
     "--rm",
     "--name",
-    "${localEnv:USER:anon}-rapids-${localWorkspaceFolderBasename}-24.12-cuda12.5-pip"
+    "${localEnv:USER:anon}-rapids-${localWorkspaceFolderBasename}-24.12-cuda12.5-pip",
+    "--privileged",
+    "--cap-add=SYS_ADMIN"
   ],
   "hostRequirements": {"gpu": "optional"},
   "features": {

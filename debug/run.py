@@ -48,7 +48,7 @@ class test_manager:
 
     # Let KVIKIO use cuFile API that uses GDS
     def run(self, is_cold_cache, cardinality):
-        num_threads_options = [1, 8]
+        num_threads_options = [1, 2, 4, 8]
 
         subtest_env = self.test_env.copy()
 

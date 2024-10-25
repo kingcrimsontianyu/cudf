@@ -13,6 +13,8 @@ class test_manager:
         # self.test_env["CUFILE_ALLOW_COMPAT_MODE"] = "false"
         self.test_env["CUFILE_LOGGING_LEVEL"] = "WARN"
 
+        self.test_env["TMPDIR"] = "/mnt/cyberpunk/tmp"
+
         self.color_green = '\x1b[1;32m'
         self.color_end = '\x1b[0m'
 

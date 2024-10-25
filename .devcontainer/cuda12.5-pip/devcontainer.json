@@ -13,7 +13,9 @@
     "--name",
     "${localEnv:USER:anon}-rapids-${localWorkspaceFolderBasename}-24.12-cuda12.5-pip",
     "--privileged",
-    "--cap-add=SYS_ADMIN"
+    "--cap-add=SYS_ADMIN",
+    "-v",
+    "/mnt/cyberpunk:/mnt/cyberpunk"
   ],
   "hostRequirements": {"gpu": "optional"},
   "features": {

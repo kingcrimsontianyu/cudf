@@ -23,3 +23,26 @@ PC
     "${localEnv:HOME}/.ssh:/home/coder/.ssh",
     "--privileged",
     "--cap-add=SYS_ADMIN"
+
+ipp1-3304
+    "--name",
+    "${localEnv:USER:anon}-rapids-${localWorkspaceFolderBasename}-25.04-cuda12.8-pip",
+    "--gpus=all",
+    "-v",
+    "/run/udev:/run/udev",
+    "-v",
+    "/sys/kernel/config:/sys/kernel/config",
+    "-v",
+    "/dev:/dev",
+    "-v",
+    "/lib/modules/5.4.0-182-generic:/lib/modules/5.4.0-182-generic",
+    "-v",
+    "/usr/local/cuda/gds:/mnt/cuda_gds",
+    "-v",
+    "/raid/tialiu:/mnt/nvme",
+    "-v",
+    "${localEnv:HOME}/biubiu_fio:/mnt/fio",
+    "-v",
+    "${localEnv:HOME}/.ssh:/home/coder/.ssh",
+    "--privileged",
+    "--cap-add=SYS_ADMIN"

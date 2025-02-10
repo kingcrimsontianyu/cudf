@@ -22,7 +22,7 @@
     "-v",
     "/lib/modules/5.4.0-182-generic:/lib/modules/5.4.0-182-generic",
     "-v",
-    "/usr/local/cuda/gds:/mnt/gds",
+    "/usr/local/cuda/gds:/mnt/cuda_gds",
     "-v",
     "/raid/tialiu:/mnt/nvme",
     "-v",

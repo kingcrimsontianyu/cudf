@@ -38,7 +38,7 @@ class test_manager_base:
 
     def _generate_cmd(self):
         if "OUTPUT_TO_CSV" in self.config:
-            self.full_command += " --csv stdout"
+            self.full_command += " --min-samples 80 --timeout 60 --csv stdout"
 
     def _run(self):
         print(f"{self.color_green}--> {self.config_name}{self.color_end}")
@@ -63,7 +63,7 @@ class test_manager_parquet(test_manager_base):
     def _generate_cmd(self):
         my_bin = os.path.join(self.bench_program_dir, "PARQUET_READER_NVBENCH")
         my_option = "parquet_read_io_compression"
-        self.full_command = f"{my_bin} -d 0 -b {my_option} -a compression_type=NONE -a io_type=FILEPATH -a cardinality=0 -a run_length=1 --min-samples 40"
+        self.full_command = f"{my_bin} -d 0 -b {my_option} -a compression_type=NONE -a io_type=FILEPATH -a cardinality=0 -a run_length=1"
         super()._generate_cmd()
 
 
@@ -75,7 +75,7 @@ class test_manager_orc(test_manager_base):
     def _generate_cmd(self):
         my_bin = os.path.join(self.bench_program_dir, "ORC_READER_NVBENCH")
         my_option = "orc_read_io_compression"
-        self.full_command = f"{my_bin} -d 0 -b {my_option} -a compression=NONE -a io=FILEPATH -a cardinality=0 -a run_length=1 --min-samples 40"
+        self.full_command = f"{my_bin} -d 0 -b {my_option} -a compression=NONE -a io=FILEPATH -a cardinality=0 -a run_length=1"
         super()._generate_cmd()
 
 
@@ -87,7 +87,7 @@ class test_manager_json(test_manager_base):
     def _generate_cmd(self):
         my_bin = os.path.join(self.bench_program_dir, "JSON_READER_NVBENCH")
         my_option = "json_read_io"
-        self.full_command = f"{my_bin} -d 0 -b {my_option} -a io=FILEPATH --min-samples 40"
+        self.full_command = f"{my_bin} -d 0 -b {my_option} -a io=FILEPATH"
         super()._generate_cmd()
 
 
@@ -99,15 +99,16 @@ class test_manager_csv(test_manager_base):
     def _generate_cmd(self):
         my_bin = os.path.join(self.bench_program_dir, "CSV_READER_NVBENCH")
         my_option = "csv_read_io"
-        self.full_command = f"{my_bin} -d 0 -b {my_option} -a io=FILEPATH --min-samples 40"
+        self.full_command = f"{my_bin} -d 0 -b {my_option} -a io=FILEPATH"
         super()._generate_cmd()
 
 
-if __name__ == '__main__':
+def do_test():
     config = {
         # "TMPDIR": "/mnt/nvme/run_benchmark",
         "TMPDIR": "/mnt/nvme_ubuntu_test",
         "KVIKIO_COMPAT_MODE": "on",
+        "KVIKIO_NTHREADS": "8",
         # "CUFILE_ALLOW_COMPAT_MODE": "false",
         "CUDF_BENCHMARK_DROP_CACHE": "true",
         # "CUDA_VISIBLE_DEVICES": "1",
@@ -116,10 +117,16 @@ if __name__ == '__main__':
         "OUTPUT_TO_CSV": "true"
     }
 
-    tm_list = [test_manager_parquet(config),
-               test_manager_orc(config),
-               test_manager_json(config),
-               test_manager_csv(config)]
+    tm_list = [
+        # test_manager_parquet(config),
+        test_manager_orc(config),
+        # test_manager_json(config),
+        # test_manager_csv(config)
+    ]
 
     for tm in tm_list:
         tm.run()
+
+
+if __name__ == '__main__':
+    do_test()

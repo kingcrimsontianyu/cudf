@@ -1,0 +1,9 @@
+{
+    "packages": {
+      "bs_thread_pool": {
+        "version": "4.1.0",
+        "git_url": "https://github.com/bshoshany/thread-pool.git",
+        "git_tag": "097aa718f25d44315cadb80b407144ad455ee4f9"
+      }
+    }
+}

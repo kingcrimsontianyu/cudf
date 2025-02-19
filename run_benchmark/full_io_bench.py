@@ -118,10 +118,10 @@ def do_test():
     }
 
     tm_list = [
-        # test_manager_parquet(config),
+        test_manager_parquet(config),
         test_manager_orc(config),
-        # test_manager_json(config),
-        # test_manager_csv(config)
+        test_manager_json(config),
+        test_manager_csv(config)
     ]
 
     for tm in tm_list:

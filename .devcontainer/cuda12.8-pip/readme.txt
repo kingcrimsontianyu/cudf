@@ -25,6 +25,7 @@ PC
     "--cap-add=SYS_ADMIN"
 
 lego-cg1-qs-203
+    "--rm",
     "--name",
     "${localEnv:USER:anon}-rapids-${localWorkspaceFolderBasename}-25.04-cuda12.8-pip",
     "--gpus=all",
@@ -48,6 +49,7 @@ lego-cg1-qs-203
     "--cap-add=SYS_ADMIN"
 
 ipp1-3304
+    "--rm",
     "--name",
     "${localEnv:USER:anon}-rapids-${localWorkspaceFolderBasename}-25.04-cuda12.8-pip",
     "--gpus=all",

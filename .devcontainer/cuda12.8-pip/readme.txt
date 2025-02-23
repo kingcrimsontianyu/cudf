@@ -14,7 +14,7 @@ PC
     "-v",
     "/usr/local/cuda/gds:/mnt/cuda/gds",
     "-v",
-    "/mnt/nvme_ubuntu_test:/mnt/nvme_ubuntu_test",
+    "/mnt/nvme_ubuntu_test:/mnt/nvme",
     "-v",
     "/home/biubiuty/biubiu/MagnumIO:/mnt/MagnumIO",
     "-v",

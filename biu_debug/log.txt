@@ -1,0 +1,13 @@
+The following tests FAILED:
+          1 - flattests (Not Run)
+          6 - GROUPBY_TEST (Failed)
+          7 - JOIN_TEST (Failed)
+         13 - REDUCTIONS_TEST (Failed)
+         20 - UNARY_TEST (Failed)
+         24 - INTEROP_TEST (Failed)
+         29 - PARQUET_TEST (Failed)
+         30 - JSON_TEST (Failed)
+         60 - STRINGS_TEST (Failed)
+         61 - LARGE_STRINGS_TEST (Timeout)
+         64 - TEXT_TEST (Failed)
+         69 - LISTS_TEST (Failed)

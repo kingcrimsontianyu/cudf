@@ -272,7 +272,7 @@ void arrow_column::to_arrow_schema(ArrowSchema* output,
                                    rmm::cuda_stream_view stream,
                                    rmm::device_async_resource_ref mr) const
 {
-  ArrowSchemaDeepCopy(&container->schema, output);
+  [[maybe_unused]] auto result = ArrowSchemaDeepCopy(&container->schema, output);
 }
 
 void arrow_column::to_arrow(ArrowDeviceArray* output,
@@ -318,7 +318,7 @@ void arrow_table::to_arrow_schema(ArrowSchema* output,
                                   rmm::cuda_stream_view stream,
                                   rmm::device_async_resource_ref mr) const
 {
-  ArrowSchemaDeepCopy(&container->schema, output);
+  [[maybe_unused]] auto result = ArrowSchemaDeepCopy(&container->schema, output);
 }
 
 void arrow_table::to_arrow(ArrowDeviceArray* output,
